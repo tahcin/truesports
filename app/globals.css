@@ -1,26 +1,222 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ═══════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS, mirroring 05-design/design-direction.md
+   Change a value here, it changes everywhere. Nothing is hard-coded.
+   ═══════════════════════════════════════════════════════════════════════ */
+@theme {
+  /* ── Colour ──────────────────────────────────────────────────────────
+     Contrast rules (hard constraints, not suggestions):
+       green   on cream ≈ 3:1  → large display text and fills ONLY
+       orange  on cream < 3:1  → FILL colour only, never text
+       Orange buttons take INK text. White on orange is 2.6:1 and fails.
+     ------------------------------------------------------------------ */
+  --color-cream: #fffcf5;
+  --color-cream-deep: #fbf4e6;
+  --color-ink: #241f21;
+  --color-ink-soft: #5a5457;
+  --color-ink-faint: #8b8285;
+  --color-green: #40ab4d;
+  --color-green-deep: #2e7d38;
+  --color-orange: #f5911f;
+  --color-orange-deep: #b4650a;
+  --color-hairline: #e8dfcc;
+
+  /* Aerial Zone: CONTAINED. Accents only, never page chrome. */
+  --color-az-red: #ed3338;
+  --color-az-purple: #704596;
+
+  /* ── Type ──────────────────────────────────────────────────────────
+     Satoshi covers display AND body. Contrast comes from weight + size,
+     not from a second family. Loaded via the Fontshare API. See
+     lib/fonts.ts for why it is not self-hosted.
+     ------------------------------------------------------------------ */
+  --font-display: 'Satoshi', system-ui, -apple-system, sans-serif;
+  --font-body: 'Satoshi', system-ui, -apple-system, sans-serif;
+
+  --text-display-xl: clamp(2.75rem, 1.6rem + 5.6vw, 5.25rem);
+  --text-display-xl--line-height: 1.02;
+  --text-display-xl--letter-spacing: -0.035em;
+
+  --text-display-l: clamp(2.125rem, 1.5rem + 3vw, 3.5rem);
+  --text-display-l--line-height: 1.06;
+  --text-display-l--letter-spacing: -0.03em;
+
+  --text-display-m: clamp(1.625rem, 1.3rem + 1.6vw, 2.375rem);
+  --text-display-m--line-height: 1.12;
+  --text-display-m--letter-spacing: -0.025em;
+
+  --text-display-s: clamp(1.375rem, 1.2rem + 0.7vw, 1.625rem);
+  --text-display-s--line-height: 1.2;
+  --text-display-s--letter-spacing: -0.02em;
+
+  --text-lede: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+  --text-lede--line-height: 1.55;
+
+  --text-micro: clamp(0.6875rem, 0.66rem + 0.1vw, 0.75rem);
+  --text-micro--line-height: 1.3;
+  --text-micro--letter-spacing: 0.13em;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* ═══════════════════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════════════════ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5.5rem; /* clears the sticky header on anchor jumps */
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-orange);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-green-deep);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+  }
+
+  /* Big display type is set LIGHT, because at 44px+ Satoshi Light is elegant where
+     Medium turns blocky. Small headings stay Medium for presence. */
+  .text-display-xl,
+  .text-display-l {
+    font-weight: 300;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ═══════════════════════════════════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════════════════════════════════ */
+@utility micro {
+  font-size: var(--text-micro);
+  line-height: var(--text-micro--line-height);
+  letter-spacing: var(--text-micro--letter-spacing);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-family: var(--font-body);
+}
+
+/* Page gutter: one source of truth for horizontal rhythm.
+   The layout is FULL-BLEED. There is no fixed content column, so the gutter
+   is what keeps content off the screen edge, and it grows with the viewport.
+   Line length is protected separately by ch-based measures on text blocks,
+   not by capping the page. */
+@utility gutter {
+  padding-inline: clamp(1.25rem, 4.5vw, 7rem);
+}
+
+/* Staggered load reveal. Applied to a container; children rise in sequence. */
+@utility rise-group {
+  & > * {
+    animation: rise 0.75s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+  }
+  & > *:nth-child(1) {
+    animation-delay: 0.05s;
+  }
+  & > *:nth-child(2) {
+    animation-delay: 0.13s;
+  }
+  & > *:nth-child(3) {
+    animation-delay: 0.21s;
+  }
+  & > *:nth-child(4) {
+    animation-delay: 0.29s;
+  }
+  & > *:nth-child(5) {
+    animation-delay: 0.37s;
+  }
+  & > *:nth-child(6) {
+    animation-delay: 0.45s;
+  }
+}
+
+/* Vertical marquee. CSS-only: the track holds two copies of its children and
+   translates by exactly -50%, so the loop is seamless with no JS, no
+   dependencies and no client component. Pauses on hover. */
+@keyframes marquee-y {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+/* Header mega-menu panel. Short and shallow on purpose: a nav panel that
+   animates like a hero feels sluggish. Covered by the reduced-motion rule. */
+@keyframes panel-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* WhatsApp launcher nudge bubble. Paired with origin-bottom-right on the
+   bubble, so it scales up out of the icon's corner like speech. Covered by
+   the reduced-motion rule below. */
+@keyframes bubble-pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.7);
+  }
+  60% {
+    transform: translateY(-1px) scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* The blanket rule above would snap the marquee to its end state (-50%),
+     cutting the top off. Stop it at the start instead. */
+  [data-marquee-track] {
+    animation: none !important;
+    transform: none !important;
+  }
 }
