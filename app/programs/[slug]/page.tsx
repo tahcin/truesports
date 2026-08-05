@@ -41,6 +41,7 @@ export async function generateMetadata({
       title: `${program.name} · ${site.name}`,
       description: program.metaDescription,
       url: `/programs/${program.slug}`,
+      images: [{ url: '/og.png', width: 1200, height: 630, alt: `${site.name}: sports for all` }],
     },
   }
 }
@@ -56,11 +57,11 @@ export default async function ProgramPage({
 
   const isAZ = program.accent === 'aerial-zone'
   const ctaHref = program.cta.kind === 'partner' ? '/contact?enquiry=school' : '/contact'
-  const { aside, band } = splitGallery(program.gallery)
+  const { hero, aside, band } = splitGallery(program)
 
   return (
     <>
-      <ProgramHero program={program} isAZ={isAZ} ctaHref={ctaHref} />
+      <ProgramHero program={program} isAZ={isAZ} ctaHref={ctaHref} heroImage={hero} />
       <Overview program={program} images={aside} />
       <Outcomes program={program} />
       <Details program={program} />
@@ -86,14 +87,24 @@ export default async function ProgramPage({
  * Photographs are scarce, so they are placed where they do the most work
  * rather than always being herded into a gallery.
  *
- * Two or fewer: they ALL go in the Overview aside, which would otherwise
- * hold a lone pull-quote in a tall column, and the gallery band is dropped
- * rather than rendered as one or two stranded tiles.
- * Three or more: the first leads the aside and the rest form a real band.
+ * No logo + photos exist: the first photo takes the hero's visual slot, so
+ * the Truesport Academy pages get imagery above the fold on desktop instead
+ * of a text-only hero (the sub-brand pages already have their logo there).
+ * Of the remainder: two or fewer ALL go in the Overview aside, which would
+ * otherwise hold a lone pull-quote in a tall column, and the gallery band
+ * is dropped rather than rendered as one or two stranded tiles. Three or
+ * more: the first leads the aside and the rest form a real band.
  */
-function splitGallery(gallery: GalleryImage[]): { aside: GalleryImage[]; band: GalleryImage[] } {
-  if (gallery.length <= 2) return { aside: gallery, band: [] }
-  return { aside: gallery.slice(0, 1), band: gallery.slice(1) }
+function splitGallery(program: Program): {
+  hero: GalleryImage | null
+  aside: GalleryImage[]
+  band: GalleryImage[]
+} {
+  const gallery = program.gallery
+  const hero = !program.logo && gallery.length > 0 ? gallery[0] : null
+  const rest = hero ? gallery.slice(1) : gallery
+  if (rest.length <= 2) return { hero, aside: rest, band: [] }
+  return { hero, aside: rest.slice(0, 1), band: rest.slice(1) }
 }
 
 /**
@@ -112,12 +123,14 @@ function heroFacts(program: Program): { label: string; value: string }[] {
   ]
 
   if (program.coaches.length > 0) {
+    // Names beat a count: "Brijesh Sagar & Prajwal A S" tells a parent who
+    // they're trusting; "2 named coaches" tells them to keep scrolling.
     rows.push({
       label: 'Coaching',
       value:
-        program.coaches.length === 1
-          ? '1 named coach'
-          : `${program.coaches.length} named coaches`,
+        program.coaches.length <= 2
+          ? program.coaches.map((c) => c.name.replace(/^Coach\s+/i, '')).join(' & ')
+          : `${program.coaches.length} certified coaches`,
     })
   }
 
@@ -159,12 +172,14 @@ function ProgramHero({
   program,
   isAZ,
   ctaHref,
+  heroImage,
 }: {
   program: Program
   isAZ: boolean
   ctaHref: string
+  heroImage: GalleryImage | null
 }) {
-  const hasLogo = Boolean(program.logo)
+  const hasVisual = Boolean(program.logo) || Boolean(heroImage)
 
   return (
     <div className="border-b border-hairline bg-cream-deep">
@@ -191,7 +206,7 @@ function ProgramHero({
           )}
 
           <div
-            className={`rise-group lg:col-start-1 lg:row-start-1 ${hasLogo ? 'lg:row-span-2' : ''}`}
+            className={`rise-group lg:col-start-1 lg:row-start-1 ${hasVisual ? 'lg:row-span-2' : ''}`}
           >
             <div className="mb-6 flex flex-wrap items-center gap-3">
               {/* Contained sub-brand accent. Never becomes page chrome. */}
@@ -202,13 +217,13 @@ function ProgramHero({
               >
                 {program.sport}
               </span>
-              <span
-                className={`micro rounded-sm px-2 py-1 ${
-                  program.ageGroup ? 'bg-ink/[0.05] text-ink-soft' : 'bg-ink/[0.05] text-ink-faint'
-                }`}
-              >
-                {program.ageGroup ?? 'Age group TBC'}
-              </span>
+              {/* A missing age range is omitted, never shown as "TBC"; the
+                  gap lives in 02-brief/open-questions.md, not in the hero. */}
+              {program.ageGroup && (
+                <span className="micro rounded-sm bg-ink/[0.05] px-2 py-1 text-ink-soft">
+                  {program.ageGroup}
+                </span>
+              )}
             </div>
 
             {/* Measures are set per element, not on the wrapper. A single
@@ -237,9 +252,26 @@ function ProgramHero({
             </div>
           </div>
 
+          {/* Photo hero for programs without a sub-brand logo. Sits after
+              the text in DOM so mobile keeps its headline-first order. */}
+          {heroImage && !program.logo && (
+            <div className="border border-hairline bg-cream p-1.5 lg:col-start-2 lg:row-start-1">
+              <div className="relative aspect-[16/10] overflow-hidden lg:aspect-[4/3]">
+                <Image
+                  src={heroImage.src}
+                  alt={heroImage.alt}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 27rem"
+                  className="object-cover"
+                />
+              </div>
+            </div>
+          )}
+
           <FactPanel
             rows={heroFacts(program)}
-            className={`lg:col-start-2 ${hasLogo ? 'lg:row-start-2' : 'lg:row-start-1'}`}
+            className={`lg:col-start-2 ${hasVisual ? 'lg:row-start-2' : 'lg:row-start-1'}`}
           />
         </div>
       </Container>
@@ -254,11 +286,17 @@ function Overview({ program, images }: { program: Program; images: GalleryImage[
     <Section>
       <Container>
         <div
-          className={`grid gap-x-[clamp(2rem,5vw,4rem)] gap-y-10 lg:grid-cols-[auto_minmax(0,1fr)] ${
-            hasAside ? 'xl:grid-cols-[auto_minmax(0,1fr)_clamp(16rem,22vw,22rem)]' : ''
+          className={`grid gap-x-[clamp(2rem,5vw,4rem)] gap-y-10 ${
+            hasAside
+              ? /* Third column from lg (not xl, which left a 1024–1280 void
+                   under the prose). The aside takes ALL remaining width, so
+                   there is no gap-hole between capped prose and a floating
+                   right-pinned box: prose, then photo, then page gutter. */
+                'lg:grid-cols-[minmax(0,14rem)_minmax(0,58ch)_minmax(0,1fr)]'
+              : 'lg:grid-cols-[minmax(0,14rem)_minmax(0,1fr)]'
           }`}
         >
-          <div className="lg:w-[14rem]">
+          <div>
             <Rule className="mb-4" />
             <MicroLabel>The program</MicroLabel>
           </div>
@@ -270,21 +308,20 @@ function Overview({ program, images }: { program: Program; images: GalleryImage[
           </div>
 
           {hasAside && (
-            /* Below xl there is no third column to sit in, so it falls under
-               the prose and takes a comfortable width of its own. */
-            <aside className="space-y-6 max-xl:max-w-[32rem] lg:col-start-2 xl:col-start-3 xl:row-start-1">
+            /* Aside images are cropped to a landscape ratio on desktop no
+               matter their native orientation: a portrait tower here made
+               the whole section twice the prose's height, and the crop is
+               what lets the photo span prose-edge to page-gutter without
+               dominating. */
+            <aside className="space-y-6 max-lg:max-w-[32rem] lg:col-start-3 lg:row-start-1">
               {images.map((img) => (
                 <div key={img.src} className="border border-hairline bg-cream p-1.5">
-                  <div
-                    className={`relative overflow-hidden ${
-                      img.orientation === 'portrait' ? 'aspect-[3/4]' : 'aspect-[4/3]'
-                    }`}
-                  >
+                  <div className="relative aspect-[4/3] overflow-hidden lg:aspect-[3/2]">
                     <Image
                       src={img.src}
                       alt={img.alt}
                       fill
-                      sizes="(max-width: 1280px) 32rem, 22rem"
+                      sizes="(max-width: 1024px) 32rem, 45vw"
                       className="object-cover"
                     />
                   </div>
@@ -576,11 +613,11 @@ function Gallery({ images }: { images: GalleryImage[] }) {
     <Section band>
       <Container>
         <SectionHead eyebrow="Gallery" title="Inside the sessions." />
-        {/* Always three columns at lg, even for a two image remainder.
-            Letting two images share the full width blows them up to half a
-            screen each and costs more height than the whole band is worth;
-            a ragged third cell is invisible in a gap-separated grid. */}
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Never fewer than three columns at lg, four from xl: letting two
+            or three images share the full width blows them up to half a
+            screen each. A ragged last cell is invisible in a gap-separated
+            grid. */}
+        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {images.map((img) => (
             <li key={img.src} className="border border-hairline bg-cream p-1.5">
               <div
@@ -592,7 +629,7 @@ function Gallery({ images }: { images: GalleryImage[] }) {
                   src={img.src}
                   alt={img.alt}
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                   className="object-cover"
                 />
               </div>

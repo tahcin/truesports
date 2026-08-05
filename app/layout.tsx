@@ -20,8 +20,9 @@ export const metadata: Metadata = {
     url: site.url,
     title: `${site.name}: Find the sport that fits your child.`,
     description: site.description,
+    images: [{ url: '/og.png', width: 1200, height: 630, alt: `${site.name}: sports for all` }],
   },
-  twitter: { card: 'summary_large_image' },
+  twitter: { card: 'summary_large_image', images: ['/og.png'] },
   robots: { index: true, follow: true },
 }
 
