@@ -11,9 +11,13 @@ export const site = {
   tagline: 'Sports for all',
   platformLine: 'One platform. Every sport. Every age.',
 
-  // Custom domain (truesportsolutions.in) not bought/connected yet; absolute
-  // URLs (OG image, sitemap, canonicals) must resolve or link previews break.
-  url: 'https://truesportsolutions.vercel.app',
+  // Vercel sets this to the production domain at build time: the vercel.app
+  // domain today, and the custom domain automatically once one is connected
+  // (it picks the shortest custom domain). Absolute URLs built from it (OG
+  // image, sitemap, canonicals) must resolve or link previews break.
+  url: process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : 'https://truesportsolutions.vercel.app',
 
   description:
     'Certified coaching in gymnastics, football, basketball and swimming for children in Bengaluru. At our centre, in your school, or inside your community.',
