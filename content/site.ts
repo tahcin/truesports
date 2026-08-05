@@ -11,7 +11,9 @@ export const site = {
   tagline: 'Sports for all',
   platformLine: 'One platform. Every sport. Every age.',
 
-  url: 'https://truesportsolutions.in',
+  // Custom domain (truesportsolutions.in) not bought/connected yet; absolute
+  // URLs (OG image, sitemap, canonicals) must resolve or link previews break.
+  url: 'https://truesportsolutions.vercel.app',
 
   description:
     'Certified coaching in gymnastics, football, basketball and swimming for children in Bengaluru. At our centre, in your school, or inside your community.',
