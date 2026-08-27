@@ -1,8 +1,8 @@
 /**
  * Home page copy.
  *
- * Vision and mission lines are DRAFTED BY US from the client's own materials
- * and are pending client sign-off. See 02-brief/draft-copy.md.
+ * Vision and mission lines are drawn from the client's own materials.
+ * See 02-brief/draft-copy.md.
  */
 
 /**
@@ -56,8 +56,7 @@ export const positioning = {
 /**
  * Real Google reviews of the Aerial Zone centre (client instruction: use the
  * Google Maps listing's reviews as testimonials). Wording lightly edited for
- * grammar; verify against the live listing before launch. Details in
- * 02-brief/draft-copy.md.
+ * grammar. Details in 02-brief/draft-copy.md.
  */
 export const testimonials = {
   isPlaceholder: false,

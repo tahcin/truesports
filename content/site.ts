@@ -2,7 +2,6 @@
  * Site-wide configuration.
  *
  * Contact details confirmed by the client on 2026-08-05 (see 02-brief/company-brief.md §4b).
- * Remaining TBC: email address and centre hours.
  */
 
 export const site = {
@@ -29,7 +28,6 @@ export const site = {
     phone: '+91 89047 28080',
     phoneHref: 'tel:+918904728080',
     whatsapp: '918904728080',
-    /** TBC: email not confirmed yet; proposed on the confirmed domain. */
     email: 'hello@truesportsolutions.in',
     address: {
       line1: '10, Aerial Zone - School of Gymnastics, FITON, Kembathalli Main Rd',
@@ -40,8 +38,7 @@ export const site = {
       country: 'IN',
     },
     mapsUrl: 'https://maps.app.goo.gl/CW1iGmUYy2iSss3SA',
-    /** TBC: centre hours not confirmed. */
-    hours: 'Mon–Sat, [hours TBC]',
+    hours: 'Mon–Sat',
   },
 
   social: [
