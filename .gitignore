@@ -41,4 +41,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.vercel
+# editors and AI tooling
+.vscode/
+.idea/
+.claude/
+CLAUDE.md
+AGENTS.md

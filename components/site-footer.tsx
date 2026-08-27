@@ -75,11 +75,8 @@ export function SiteFooter() {
         </div>
 
         <div className="flex flex-wrap justify-between gap-x-3 gap-y-1.5 py-6 text-[0.75rem] sm:py-7">
-          <span>
-            © {new Date().getFullYear()} {site.legalName} · {site.city}
-          </span>
           <span className="text-cream/35">
-            Grassroots sport since {site.founded} · Built by{' '}
+            Built by{' '}
             <a
               href="https://www.linkedin.com/in/priyanshisharma20/"
               target="_blank"
@@ -97,6 +94,9 @@ export function SiteFooter() {
             >
               Tahcin
             </a>
+          </span>
+          <span>
+            © {new Date().getFullYear()} {site.legalName} · {site.city}
           </span>
         </div>
       </Container>
