@@ -3,7 +3,16 @@ import { programs } from '@/content/programs'
 import { site } from '@/content/site'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ['', '/about', '/programs', '/programs/savya-fit', '/contact'].map(
+  const staticRoutes = [
+    '',
+    '/about',
+    '/team',
+    '/gallery',
+    '/partner-with-us',
+    '/programs',
+    '/programs/savya-fit',
+    '/contact',
+  ].map(
     (route) => ({
       url: `${site.url}${route}`,
       lastModified: new Date(),

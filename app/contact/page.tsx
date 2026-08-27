@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { contactHero, partnerships } from '@/content/contact'
+import { contactHero } from '@/content/contact'
 import { site, whatsappHref } from '@/content/site'
 import { EnquiryForm } from '@/components/enquiry-form'
 import {
@@ -7,7 +7,6 @@ import {
   Container,
   MicroLabel,
   Section,
-  SectionHead,
 } from '@/components/ui'
 
 export const metadata: Metadata = {
@@ -122,32 +121,21 @@ export default function ContactPage() {
         />
       </div>
 
-      {/* ── PARTNERSHIPS ─────────────────────────────────────────────
-          School administrators and RWA managers are a different audience
-          from parents, and were previously buried in a dropdown option. */}
+      {/* ── PARTNERSHIPS CROSS-LINK ──────────────────────────────────
+          The full pitch for school administrators and RWA managers lives
+          on /partner-with-us now; this band just routes them there. */}
       <Section band>
         <Container>
-          <SectionHead
-            eyebrow="Partner with us"
-            title="Not a parent?"
-            lede="We also work with schools and residential communities. Both start with the same conversation."
-          />
-          <div className="grid border-t border-hairline md:grid-cols-2">
-            {partnerships.map((p) => (
-              <div
-                key={p.label}
-                className="flex flex-col border-b border-hairline py-8 pr-6 md:odd:border-r md:odd:pr-12 md:even:pl-12"
-              >
-                <MicroLabel className="mb-3 block text-green-deep">{p.label}</MicroLabel>
-                <h3 className="mb-3 font-display text-display-s">{p.title}</h3>
-                <p className="mb-7 max-w-[46ch] text-[0.9375rem] text-ink-soft">{p.detail}</p>
-                <div className="mt-auto">
-                  <Button href={whatsappHref(`Hi! ${p.cta}. `)} variant="outline" external>
-                    {p.cta}
-                  </Button>
-                </div>
-              </div>
-            ))}
+          <div className="flex flex-wrap items-center justify-between gap-x-10 gap-y-6">
+            <div>
+              <h2 className="mb-2 font-display text-display-m">Not a parent?</h2>
+              <p className="max-w-[46ch] text-[0.9375rem] text-ink-soft">
+                We also run programs for schools and residential communities across Bengaluru.
+              </p>
+            </div>
+            <Button href="/partner-with-us" variant="outline">
+              Partner with us
+            </Button>
           </div>
         </Container>
       </Section>

@@ -4,7 +4,7 @@ import type { Program } from '@/types/program'
  * Brand spelling is SOCATOTS (per the official logo), not "Soccer Tots"
  * as written in the website guidelines. See 02-brief/business-scopes.md.
  *
- * Also a no-photos, no-batches, no-pricing case.
+ * Also a no-photos, no-batches case.
  */
 export const socatots: Program = {
   slug: 'socatots',
@@ -33,7 +33,6 @@ export const socatots: Program = {
     'A warm, unpressured first experience of sport',
   ],
   batches: null,
-  pricing: null,
   coaches: [],
   gallery: [],
   cta: { label: 'Enquire about this program', kind: 'enquire' },

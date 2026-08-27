@@ -52,8 +52,14 @@ export const site = {
   nav: [
     { label: 'Programs', href: '/programs' },
     { label: 'About', href: '/about' },
+    { label: 'Team', href: '/team' },
+    { label: 'Gallery', href: '/gallery' },
+    { label: 'Partner with us', href: '/partner-with-us' },
     { label: 'Contact', href: '/contact' },
   ],
+
+  /** Aerial Zone's own website. Gets a distinct header button, not a nav item. */
+  aerialZone: { label: 'Aerial Zone', href: 'https://www.aerialzone.in' },
 } as const
 
 export const whatsappHref = (message = "Hi! I'd like to book a free trial for my child.") =>

@@ -139,9 +139,9 @@ export default function AboutPage() {
       <Section>
         <Container>
           <SectionHead
-            eyebrow="The team"
-            title="Coaches with credentials."
-            lede="FIG international diplomas, SAI certification, AIFF licences, national medalists and Khelo India officials. Qualification is our baseline, not our headline."
+            eyebrow="Leadership"
+            title="The people behind True Sport."
+            lede="The team running operations and coaching standards day to day. The full coaching roster has a page of its own."
           />
           <ul className="grid border-t border-hairline md:grid-cols-2">
             {team.map((m) => (
@@ -181,6 +181,11 @@ export default function AboutPage() {
               </li>
             ))}
           </ul>
+          <div className="mt-8">
+            <Button href="/team" variant="outline">
+              Meet the team
+            </Button>
+          </div>
         </Container>
       </Section>
 

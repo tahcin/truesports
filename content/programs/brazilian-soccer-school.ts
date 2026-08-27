@@ -1,7 +1,7 @@
 import type { Program } from '@/types/program'
 
 /**
- * ⚠️ THE HARD CASE. This program has NO photos, NO batch data and NO pricing.
+ * ⚠️ THE HARD CASE. This program has NO photos and NO batch data.
  * It is marked "Currently Inactive" in the pitch deck but included in the
  * sitemap per the website guidelines (guidelines are the latest source).
  *
@@ -33,7 +33,6 @@ export const brazilianSoccerSchool: Program = {
     'A technical foundation that transfers to any level of football',
   ],
   batches: null,
-  pricing: null,
   coaches: [
     {
       name: 'Coach Brijesh Sagar',

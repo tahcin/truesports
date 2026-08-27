@@ -71,6 +71,11 @@ export type TeamMember = {
   bio: string
 }
 
+/**
+ * Leadership only, per client instruction (2026-08-11): the About page shows
+ * Dr. Anuradha (founder section), Vijayendra and Chethan. Everyone else lives
+ * on /team, see content/coaches.ts.
+ */
 export const team: TeamMember[] = [
   {
     name: 'Mr. Vijayendra P',
@@ -83,22 +88,6 @@ export const team: TeamMember[] = [
     /** Title per client instruction, 2026-08-05 (dump/dump.txt). */
     role: 'Head of Operations and Head Coach of Gymnastics',
     photo: '/photos/team-chethan-r.jpg',
-    bio: "Over 12 years in gymnastics, and formerly Head of the Gymnastics Department at Vibgyor Group of Schools, managing programs across campuses nationwide. He holds FIG International Diplomas Level 1, 2 and 3 in Men's Artistic Gymnastics and is an NS-NIS 'A' Grade certified coach. A national-level gymnast, state medalist and certified National Judge, he served at Khelo India 2025.",
-  },
-  {
-    name: 'Coach Brijesh Sagar',
-    role: 'Head Coach, Football',
-    photo: '/photos/coach-brijesh-sagar.jpg',
-    /** Portrait: face sits in the top quarter, keep the crop high. */
-    photoPosition: 'center 18%',
-    bio: "AIFF 'C' Licensed coach and qualified Strength & Conditioning Specialist with nearly a decade of coaching since 2016. Trained under the Brazilian Soccer Tots & School coaching camps and founder of Tiny Kicks Academy, a grassroots initiative starting from age three.",
-  },
-  {
-    name: 'Coach Prajwal A S',
-    role: 'Head Coach, Football',
-    photo: '/photos/coach-prajwal-a-s.jpg',
-    /** Full-body action shot: face is around a quarter of the way down. */
-    photoPosition: 'center 22%',
-    bio: "AIFF 'D' Licensed coach and Strength & Conditioning Specialist from Hubli. Selected for the India Senior Camp, a two-time national medalist who has represented Karnataka across age groups and competed in the Super Division League for three seasons.",
+    bio: "Over 12 years in gymnastics, and formerly Head of the Gymnastics Department at Vibgyor Group of Schools, managing programs across campuses nationwide. He holds Level 1, 2 and 3 FIG International Diplomas in Men's Artistic Gymnastics, the Level 1 International Diploma in Women's Artistic Gymnastics, and is an NS-NIS 'A' Grade certified coach. A national-level gymnast, state medalist and certified National Judge, he served at Khelo India 2025.",
   },
 ]

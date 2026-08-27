@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getProgram, programs } from '@/content/programs'
 import { site, whatsappHref } from '@/content/site'
-import type { Batch, Coach, GalleryImage, Pricing, Program } from '@/types/program'
+import type { Batch, Coach, GalleryImage, Program } from '@/types/program'
 import {
   Button,
   Container,
@@ -13,7 +13,6 @@ import {
   MicroLabel,
   PullQuote,
   Rule,
-  RuleGrid,
   Section,
   SectionHead,
 } from '@/components/ui'
@@ -56,7 +55,7 @@ export default async function ProgramPage({
   if (!program) notFound()
 
   const isAZ = program.accent === 'aerial-zone'
-  const ctaHref = program.cta.kind === 'partner' ? '/contact?enquiry=school' : '/contact'
+  const ctaHref = program.cta.kind === 'partner' ? '/partner-with-us' : '/contact'
   const { hero, aside, band } = splitGallery(program)
 
   return (
@@ -75,7 +74,7 @@ export default async function ProgramPage({
 /* ═══════════════════════════════════════════════════════════════════════
    Every section below must render deliberately when its data is null or
    empty. That is the whole test of this template. Brazilian Soccer School
-   has no photos, no batches, no pricing and one photo-less coach.
+   has no photos, no batches and one photo-less coach.
 
    The second test is WIDTH. The layout is full-bleed and the prose is
    capped at a `ch` measure, so any section that is a single left-aligned
@@ -119,7 +118,6 @@ function heroFacts(program: Program): { label: string; value: string }[] {
   const rows = [
     { label: 'Sport', value: program.sport },
     { label: forSchools ? 'For' : 'Ages', value: program.ageGroup ?? 'On request' },
-    { label: forSchools ? 'Investment' : 'Fees', value: feeSummary(program.pricing) },
   ]
 
   if (program.coaches.length > 0) {
@@ -144,13 +142,6 @@ function heroFacts(program: Program): { label: string; value: string }[] {
   }
 
   return rows
-}
-
-/** A single published tier prints as-is. Several print as a floor. */
-function feeSummary(pricing: Pricing | null): string {
-  if (!pricing) return 'On request'
-  const [first] = pricing.tiers
-  return pricing.tiers.length > 1 ? `From ${first.price}` : first.price
 }
 
 /* ── Hero ───────────────────────────────────────────────────────────────
@@ -367,57 +358,34 @@ function Outcomes({ program }: { program: Program }) {
   )
 }
 
-/* ── Batches and fees ───────────────────────────────────────────────────
-   These were two separate full-width bands. Every program in the catalogue
-   has `batches: null`, and four of six also have `pricing: null`, so on
-   most pages that was two consecutive screens of empty state.
-
-   One band now, in four shapes, one per real data state.
+/* ── Batches ────────────────────────────────────────────────────────────
+   Fees and pricing are deliberately not published anywhere on the site;
+   every program answers with an enquiry CTA instead. The only data this
+   band varies on is batch timings, and today every program has
+   `batches: null`, so the enquiry panel IS the section on all six pages.
    ─────────────────────────────────────────────────────────────────────── */
 
-const TIMINGS_BODY =
-  "Timings vary by location and age group, and we open new batches as they fill. Tell us your child's age and we'll send the current schedule."
-
 function Details({ program }: { program: Program }) {
-  const { batches, pricing } = program
-  const title = program.audience === 'schools' ? 'Batches and investment.' : 'Batches and fees.'
+  const { batches } = program
+  const forSchools = program.audience === 'schools'
+  const title = forSchools ? 'Batches and scheduling.' : 'Batches and timings.'
 
-  // Both published. Nobody today, but the template has to hold: a four
-  // column table and a tier grid both want the full width, so they stack.
-  if (batches && pricing) {
-    return (
-      <Section band>
-        <Container>
-          <SectionHead eyebrow="Practical details" title={title} />
-          <BatchTable batches={batches} />
-          <div className="mt-[clamp(2.5rem,5vw,3.5rem)]">
-            <PricingBlock pricing={pricing} />
-          </div>
-        </Container>
-      </Section>
-    )
-  }
+  const panel = forSchools ? (
+    <EnquirePanel
+      title="Planned around your campus"
+      body="Batch size, session frequency and equipment are all scoped to your timetable. Tell us about your school and we'll put together a proposal."
+      href="/contact"
+      cta="Request a proposal"
+    />
+  ) : (
+    <EnquirePanel
+      title="Timings on request"
+      body="Timings vary by location and age group, and we open new batches as they fill. Tell us your child's age and we'll send the current schedule. The first session is free."
+      cta="Ask for timings"
+    />
+  )
 
-  // Fees published, timings not. Aerial Zone Centre and Schools.
-  if (pricing) {
-    return (
-      <Section band>
-        <Container>
-          <SectionHead eyebrow="Practical details" title={title} />
-          <div className="grid gap-[clamp(2rem,4vw,3.5rem)] lg:grid-cols-[minmax(0,1fr)_clamp(17rem,23vw,21rem)] lg:items-start">
-            <PricingBlock pricing={pricing} />
-            <EnquirePanel
-              title="Batch timings on request"
-              body={TIMINGS_BODY}
-              cta="Ask for timings"
-            />
-          </div>
-        </Container>
-      </Section>
-    )
-  }
-
-  // Timings published, fees not.
+  // Timings published. Nobody today, but the template has to hold.
   if (batches) {
     return (
       <Section band>
@@ -425,29 +393,21 @@ function Details({ program }: { program: Program }) {
           <SectionHead eyebrow="Practical details" title={title} />
           <div className="grid gap-[clamp(2rem,4vw,3.5rem)] lg:grid-cols-[minmax(0,1fr)_clamp(17rem,23vw,21rem)] lg:items-start">
             <BatchTable batches={batches} />
-            <EnquirePanel
-              title="Fees on request"
-              body="Fees depend on session frequency, location and age group. Get in touch and we'll send you the current plans."
-              cta="Ask about fees"
-            />
+            {panel}
           </div>
         </Container>
       </Section>
     )
   }
 
-  // Neither. The headline takes the left column so the panel is not a
-  // narrow box adrift in an otherwise empty band.
+  // No batch data. The headline takes the left column so the panel is not
+  // a narrow box adrift in an otherwise empty band.
   return (
     <Section band>
       <Container>
         <div className="grid gap-[clamp(2rem,5vw,4rem)] lg:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] lg:items-start">
           <SectionHead eyebrow="Practical details" title={title} className="mb-0" />
-          <EnquirePanel
-            title="Timings and fees on request"
-            body="Timings vary by location and age group, and fees depend on how often your child trains. Tell us their age and we'll send the current schedule and plans. The first session is free either way."
-            cta="Ask for timings and fees"
-          />
+          {panel}
         </div>
       </Container>
     </Section>
@@ -477,45 +437,6 @@ function BatchTable({ batches }: { batches: Batch[] }) {
           ))}
         </tbody>
       </table>
-    </div>
-  )
-}
-
-/** Written out in full because Tailwind cannot see an interpolated class. */
-function tierColumns(count: number): string {
-  if (count <= 1) return ''
-  if (count === 2) return 'sm:grid-cols-2'
-  return 'sm:grid-cols-2 xl:grid-cols-3'
-}
-
-function PricingBlock({ pricing }: { pricing: Pricing }) {
-  return (
-    <div>
-      {/* RuleGrid, so a ragged last row leaves no rule pointing at nothing.
-          Column count follows the tier count: Aerial Zone Schools publishes
-          ONE tier, and in a three column grid that left a top rule and a
-          vertical rule running out across empty space. One tier takes the
-          full width instead. */}
-      <RuleGrid className={`border-t border-hairline ${tierColumns(pricing.tiers.length)}`}>
-        {pricing.tiers.map((t) => (
-          <div
-            key={t.label}
-            className={`border-b border-r border-hairline p-6 ${
-              t.highlight ? 'bg-green/[0.06]' : ''
-            }`}
-          >
-            <p className="mb-1 text-[0.9375rem] font-semibold">{t.label}</p>
-            {t.detail && <p className="mb-4 text-[0.8125rem] text-ink-soft">{t.detail}</p>}
-            <p className="font-display text-[clamp(1.75rem,1.5rem+1vw,2.25rem)] leading-none text-green-deep">
-              {t.price}
-            </p>
-          </div>
-        ))}
-      </RuleGrid>
-      <div className="mt-6 space-y-1.5 text-[0.8125rem] text-ink-soft">
-        {pricing.registration && <p>{pricing.registration}</p>}
-        {pricing.note && <p className="max-w-[60ch]">{pricing.note}</p>}
-      </div>
     </div>
   )
 }

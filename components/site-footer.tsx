@@ -42,13 +42,16 @@ export function SiteFooter() {
                 <FooterLink href="/about">About us</FooterLink>
               </li>
               <li>
+                <FooterLink href="/team">Team</FooterLink>
+              </li>
+              <li>
                 <FooterLink href="/programs">All programs</FooterLink>
               </li>
               <li>
                 <FooterLink href="/contact">Contact</FooterLink>
               </li>
               <li>
-                <FooterLink href="/contact">Partner with us</FooterLink>
+                <FooterLink href="/partner-with-us">Partner with us</FooterLink>
               </li>
             </ul>
           </div>

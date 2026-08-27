@@ -30,8 +30,14 @@ export function SiteHeader() {
           </Link>
 
           {/* Order and labels stay driven by content/site.ts. Programs is the
-              one entry that expands, because it fans out to six pages. */}
-          <nav className="hidden items-center gap-8 text-[0.9375rem] text-ink-soft md:flex">
+              one entry that expands, because it fans out to six pages.
+              Five entries no longer fit beside two buttons at md, so the
+              full nav starts at lg and tablets keep the hamburger.
+
+              ⚠️ No whitespace-nowrap on this <nav>: the Programs panel
+              renders inside it and inherits it, which stops the program
+              summaries wrapping. Nowrap lives on the links themselves. */}
+          <nav className="hidden items-center gap-6 text-[0.9375rem] text-ink-soft lg:flex xl:gap-8">
             {site.nav.map((item) =>
               item.href === '/programs' ? (
                 <ProgramsMenu key={item.href} label={item.label} />
@@ -39,7 +45,7 @@ export function SiteHeader() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="group relative py-1 transition-colors hover:text-ink"
+                  className="group relative whitespace-nowrap py-1 transition-colors hover:text-ink"
                 >
                   {item.label}
                   <span className="absolute bottom-0 left-0 h-[1.5px] w-0 bg-orange transition-[width] duration-250 group-hover:w-full" />
@@ -49,6 +55,17 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
+            {/* Distinct Aerial Zone button: the sub-brand's own website, in
+                its own purple, so it never reads as part of True Sport nav.
+                Hidden on phones; the mobile menu carries its own entry. */}
+            <a
+              href={site.aerialZone.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden min-h-11 items-center whitespace-nowrap rounded-sm bg-az-red px-5 py-3 text-[0.9375rem] font-semibold text-cream transition-all duration-200 hover:-translate-y-px hover:shadow-[0_8px_20px_-10px_rgba(237,51,56,0.6)] md:inline-flex"
+            >
+              {site.aerialZone.label}
+            </a>
             <Button href="/contact" className="max-sm:px-4 max-sm:py-2.5 max-sm:text-sm">
               Book a Trial
             </Button>

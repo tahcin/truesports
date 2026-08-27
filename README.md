@@ -58,7 +58,7 @@ redistribution of the files. **This means the production build needs network acc
 
 ## Nullable content is load-bearing
 
-`ageGroup: null`, `batches: null`, `pricing: null` and `gallery: []` are the **real** state of
+`ageGroup: null`, `batches: null` and `gallery: []` are the **real** state of
 Brazilian Soccer School and SOCATOTS. Not hypothetical edge cases. There isn't one action shot
 in the whole asset library (`../../04-assets/ASSET-AUDIT.md`), so:
 

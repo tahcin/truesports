@@ -49,7 +49,7 @@ export function MobileNav() {
   }, [])
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -78,7 +78,7 @@ export function MobileNav() {
       {open && (
         <div
           id="mobile-menu"
-          className="gutter fixed inset-x-0 bottom-0 top-[64px] z-50 flex flex-col overflow-y-auto border-t border-hairline bg-cream pb-10 pt-4"
+          className="gutter fixed inset-x-0 bottom-0 top-[64px] z-50 flex flex-col overflow-y-auto border-t border-hairline bg-cream pb-10 pt-4 md:top-[72px]"
         >
           <nav className="flex flex-col">
             {site.nav.map((item) =>
@@ -172,6 +172,16 @@ export function MobileNav() {
                 </Link>
               ),
             )}
+            {/* Aerial Zone's own website, in its own purple so it reads as a
+                sub-brand exit, not another True Sport page. */}
+            <a
+              href={site.aerialZone.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border-b border-hairline py-5 font-display text-display-m text-az-red"
+            >
+              {site.aerialZone.label}
+            </a>
           </nav>
 
           <div className="mt-auto pt-8">

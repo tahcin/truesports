@@ -19,19 +19,6 @@ export type Batch = {
   location?: string
 }
 
-export type PricingTier = {
-  label: string
-  detail?: string
-  price: string
-  highlight?: boolean
-}
-
-export type Pricing = {
-  tiers: PricingTier[]
-  registration?: string
-  note?: string
-}
-
 export type Coach = {
   name: string
   role: string
@@ -76,8 +63,6 @@ export type Program = {
   outcomes: string[]
   /** null → renders "Enquire for details" instead of an empty table. */
   batches: Batch[] | null
-  /** null → renders the enquiry prompt. */
-  pricing: Pricing | null
   coaches: Coach[]
   /** [] must render cleanly. Most programs have no photos. */
   gallery: GalleryImage[]

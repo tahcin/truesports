@@ -29,7 +29,6 @@ export const truesportFootball: Program = {
     'A route into official club football via our State Association affiliation',
   ],
   batches: null,
-  pricing: null,
   coaches: [
     {
       name: 'Coach Brijesh Sagar',
@@ -49,7 +48,11 @@ export const truesportFootball: Program = {
     },
   ],
   gallery: [
+    { src: '/photos/football-u7-lineup-front.jpg', alt: 'Young True Sport footballers lined up on the pitch, waving', orientation: 'landscape' },
     { src: '/photos/football-medals-ceremony.jpg', alt: 'Young players with medals and certificates after a True Sport tournament', orientation: 'landscape' },
+    { src: '/photos/football-match-action.jpg', alt: 'Junior footballers chasing the ball mid-match', orientation: 'portrait' },
+    { src: '/photos/football-medals-goalpost.jpg', alt: 'Medal ceremony at the goalpost after a junior tournament', orientation: 'landscape' },
+    { src: '/photos/football-u12-team-lineup-turf.jpg', alt: 'True Sport junior team lined up on a green turf pitch', orientation: 'landscape' },
     { src: '/photos/community-football-group.jpg', alt: 'Families and players at a community football session', orientation: 'landscape' },
   ],
   cta: { label: 'Book a free trial', kind: 'trial' },

@@ -233,7 +233,7 @@ export function StatStrip({ stats }: { stats: readonly { value: string; label: s
 
 /**
  * A summary of the facts a parent scans for before reading anything: sport,
- * age, cost. Rows are supplied already resolved, and a row is expected to be
+ * age, trial. Rows are supplied already resolved, and a row is expected to be
  * OMITTED rather than faked when the data is absent. Where a value is simply
  * unknown, the caller passes "On request", which is true and is also the
  * next step.
@@ -301,7 +301,7 @@ export function EnquirePanel({
     <div className="border border-l-2 border-hairline border-l-orange bg-cream px-6 py-7 sm:px-8">
       <h3 className="font-display text-display-s mb-2">{title}</h3>
       <p className="mb-5 max-w-[46ch] text-[0.9375rem] text-ink-soft">{body}</p>
-      <TextLink href={href}>{cta} →</TextLink>
+      <Button href={href}>{cta}</Button>
     </div>
   )
 }

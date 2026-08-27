@@ -25,17 +25,15 @@ export const aerialZoneSchools: Program = {
     'Physical literacy that supports every other sport on your timetable',
     'A differentiated PE offering few schools in the city can match',
   ],
-  pricing: {
-    tiers: [{ label: 'Annual program', detail: 'Per child, per academic year', price: '₹7,000 – ₹14,000' }],
-    note: 'Final pricing depends on batch size, session frequency and equipment requirements. Get in touch and we will put together a proposal for your campus.',
-  },
+  // Investment figures are deliberately not published; schools get a
+  // proposal CTA instead. Historic range: ₹7,000–₹14,000 per child per year.
   batches: null,
   coaches: [
     {
       name: 'R. Chethan',
       role: 'Head of Operations and Head Coach of Gymnastics',
       credentials:
-        "FIG International Diplomas Level 1, 2 and 3. NS-NIS 'A' Grade certified. Former Head of the Gymnastics Department at Vibgyor Group of Schools, managing programs across campuses nationwide.",
+        "FIG International Diplomas Level 1, 2 and 3 in Men's Artistic Gymnastics and Level 1 in Women's Artistic Gymnastics. NS-NIS 'A' Grade certified. Former Head of the Gymnastics Department at Vibgyor Group of Schools, managing programs across campuses nationwide.",
       photo: '/photos/team-chethan-r.jpg',
     },
   ],

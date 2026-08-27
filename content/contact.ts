@@ -28,20 +28,5 @@ export const steps = [
   },
 ]
 
-/** For school administrators and RWA / community managers, not parents. */
-export const partnerships = [
-  {
-    label: 'For schools',
-    title: 'Bring gymnastics onto your timetable',
-    detail:
-      'Curriculum-based and after-school programs delivered on your campus by FIG-certified coaches. Equipment and safety standards handled by us.',
-    cta: 'Partner with us',
-  },
-  {
-    label: 'For communities',
-    title: 'Coaching inside your society',
-    detail:
-      'Football, basketball and swimming run where your residents already live, with quarterly tournaments and tracked fitness assessments.',
-    cta: 'Bring us to your community',
-  },
-]
+/* The partnerships cards moved to content/partner.ts with the
+   /partner-with-us page (client instruction, 2026-08-11). */

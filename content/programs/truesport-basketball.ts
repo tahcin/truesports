@@ -27,7 +27,6 @@ export const truesportBasketball: Program = {
     'Tracked physical development through fitness assessments',
   ],
   batches: null,
-  pricing: null,
   // No named coach currently listed for basketball. The Coaches section and
   // the hero's "Coaching" fact both drop out rather than render an empty
   // heading, the same way SOCATOTS behaves.

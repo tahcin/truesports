@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Enquiry form endpoint. Validates the submission and forwards it to the
  * Google Apps Script web app bound to the client's enquiries spreadsheet,
  * which appends it as a row. See 06-build/google-sheet-webhook/README.md
@@ -34,7 +34,9 @@ function parseEnquiry(body: unknown): Enquiry | null {
 }
 
 export async function POST(request: Request) {
-  const webhookUrl = process.env.SHEET_WEBHOOK_URL
+  // Strip BOM/whitespace: env values pasted or piped in on Windows can pick
+  // up an invisible U+FEFF prefix or trailing CRLF that breaks URL parsing.
+  const webhookUrl = process.env.SHEET_WEBHOOK_URL?.replace(/^﻿/, '').trim()
   if (!webhookUrl) {
     return Response.json({ ok: false, error: 'not-configured' }, { status: 503 })
   }
