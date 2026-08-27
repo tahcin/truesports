@@ -45,6 +45,9 @@ export function SiteFooter() {
                 <FooterLink href="/team">Team</FooterLink>
               </li>
               <li>
+                <FooterLink href="/gallery">Gallery</FooterLink>
+              </li>
+              <li>
                 <FooterLink href="/programs">All programs</FooterLink>
               </li>
               <li>
@@ -76,7 +79,24 @@ export function SiteFooter() {
             © {new Date().getFullYear()} {site.legalName} · {site.city}
           </span>
           <span className="text-cream/35">
-            Grassroots sport since {site.founded}
+            Grassroots sport since {site.founded} · Built by{' '}
+            <a
+              href="https://www.linkedin.com/in/priyanshisharma20/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-cream"
+            >
+              Priyanshi
+            </a>{' '}
+            and{' '}
+            <a
+              href="https://www.linkedin.com/in/tahcinsarwar/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-cream"
+            >
+              Tahcin
+            </a>
           </span>
         </div>
       </Container>
